@@ -54,4 +54,4 @@ jobs:
         # The GitHub token used to create an authenticated client
         github-token: ${{ github.token }} # optional, default is ${{ github.token }}
         # Whether to tell the GitHub client to log details of its requests
-        if: failure() # 이전 step이 실패할 경우
+        if: ${{ failure() }} # 이전 step이 실패할 경우
