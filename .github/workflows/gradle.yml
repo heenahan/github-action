@@ -33,3 +33,25 @@ jobs:
       uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0 
       with:
         arguments: build
+    - name: if fail github PR closed
+      uses: actions/github-script@v2.1.0 # github api 사용
+      with:
+        # The script to run
+        script: |                        
+            const ref = "${{github.ref}}"
+            const pull_number = Number(ref.split("/")[2])
+            await github.pulls.createReview({ // PR에 리뷰를 남김
+              ...context.repo,
+              pull_number, 
+              body:"테스트를 실패하여 PR을 closed 합니다.",
+              event: "REQUEST_CHANGES"
+            })
+            await github.pulls.update({ // PR 상태를 closed로 바꿈
+              ...context.repo,
+              pull_number,
+              state: "closed"
+            })
+        # The GitHub token used to create an authenticated client
+        github-token: ${{ github.token }} # optional, default is ${{ github.token }}
+        # Whether to tell the GitHub client to log details of its requests
+        f: failure() # 이전 step이 실패할 경우
