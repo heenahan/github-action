@@ -34,6 +34,7 @@ jobs:
       with:
         arguments: build
     - name: if fail github PR closed
+      if: failure() # 이전 step이 실패할 경우
       uses: actions/github-script@v2.1.0 # github api 사용
       with:
         # The script to run
@@ -54,4 +55,3 @@ jobs:
         # The GitHub token used to create an authenticated client
         github-token: ${{ github.token }} # optional, default is ${{ github.token }}
         # Whether to tell the GitHub client to log details of its requests
-        if: ${{ failure() }} # 이전 step이 실패할 경우
