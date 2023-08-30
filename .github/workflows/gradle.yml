@@ -57,3 +57,10 @@ jobs:
         # The GitHub token used to create an authenticated client
         github-token: ${{ github.token }} # optional, default is ${{ github.token }}
         # Whether to tell the GitHub client to log details of its requests
+    - name: Slack Notify
+      if: always()
+      # You may pin to the exact commit or the version.
+      # uses: rtCamp/action-slack-notify@b24d75fe0e728a4bf9fc42ee217caa686d141ee8
+      uses: rtCamp/action-slack-notify@v2.2.1
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
